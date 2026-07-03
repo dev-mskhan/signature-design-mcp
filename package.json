@@ -1,0 +1,32 @@
+{
+  "name": "signature-design-mcp",
+  "version": "1.0.0",
+  "description": "MCP server that turns the Signature Interface design skill into tools, a prompt, and a resource — rolls non-repeating tone/palette/font/shape directions so AI-generated UI stops converging on the same look.",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "signature-design-mcp": "dist/index.js"
+  },
+  "files": [
+    "dist",
+    "data"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsc --watch"
+  },
+  "keywords": ["mcp", "model-context-protocol", "design", "ui", "frontend"],
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.0",
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "typescript": "^5.5.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
