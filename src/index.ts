@@ -409,8 +409,14 @@ server.registerTool(
       "code. Regardless of the rolled tone, the plan must still follow the skill's two universal rules: plain, " +
       "sayable-out-loud words only, and no fabricated coordinate/status/spec-code/simulation labels.",
     inputSchema: {
-      subject: z.string().describe("What the product concretely is"),
-      audience: z.string().describe("Who opens this and in what state of mind"),
+      subject: z
+        .string()
+        .default("Untitled project")
+        .describe("What the product concretely is"),
+      audience: z
+        .string()
+        .default("General users")
+        .describe("Who opens this and in what state of mind"),
       avoidLast: z.number().int().min(0).max(20).default(3),
     },
   },
@@ -506,15 +512,23 @@ server.registerPrompt(
     title: "Start Signature Design Plan",
     description:
       "Produces a ready-to-paste prompt combining the signature-interface skill with a freshly rolled direction and " +
-      "a verification token for a new project.",
-    argsSchema: {
-      subject: z.string(),
-      audience: z.string(),
-      singleJob: z.string(),
-      emotionalArc: z.string(),
-    },
+      "a verification token for a new project. Takes no structured arguments: some MCP clients (e.g. Antigravity) " +
+      "call prompts/get without sending an 'arguments' object at all, and z.object(...).parse(undefined) fails at " +
+      "the top level no matter what per-field .default() values are set. Omitting argsSchema entirely skips " +
+      "argument validation altogether -- the documented pattern for a prompt that can be safely called with zero " +
+      "arguments. The brief fields below are generic placeholders -- edit them directly in the returned text, or " +
+      "use the roll_design_direction TOOL instead, since tools are invoked with real structured arguments during " +
+      "a chat turn rather than via a client's prompt-preview mechanism.",
+    // No argsSchema here on purpose -- see description above.
   },
-  async ({ subject, audience, singleJob, emotionalArc }) => {
+  async () => {
+    const subject = "Untitled project";
+    const audience = "General users";
+    const singleJob =
+      "Not yet specified — describe the app's single primary job";
+    const emotionalArc =
+      "Not yet specified — describe how the user should feel start to finish";
+
     const {
       token,
       tone,
